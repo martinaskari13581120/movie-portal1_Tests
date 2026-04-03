@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
  getTopMovies,
  searchMovies,
@@ -14,6 +14,16 @@ function Home() {
  const [query, setQuery] = useState("");
  const [page, setPage] = useState(1);
  const [selectedMovie, setSelectedMovie] = useState(null);
+ const handleMovieClick = useCallback((id) => {
+  setSelectedMovie(id);
+}, []);
+{movies.map((movie) => (
+<MovieCard
+  key={movie.id}
+  movie={movie}
+  onClick={handleMovieClick}
+/>
+))};
  useEffect(() => {
    fetchMovies();
    fetchGenres();
@@ -27,6 +37,7 @@ function Home() {
    setGenres(res.data.genres);
  };
  const handleSearch = async () => {
+  if (!query) return;
    const res = await searchMovies(query);
    setMovies(res.data.results);
  };
@@ -40,11 +51,12 @@ function Home() {
      {/* Search */}
 <input
        placeholder="Search movie..."
+       aria-label="Search movie"
        onChange={(e) => setQuery(e.target.value)}
      />
 <button onClick={handleSearch}>Search</button>
      {/* Genre Filter */}
-<select onChange={(e) => handleGenre(e.target.value)}>
+<select onChange={(e) => handleGenre(Number(e.target.value))}>
 <option value="">All Genres</option>
        {genres.map((g) => (
 <option key={g.id} value={g.id}>

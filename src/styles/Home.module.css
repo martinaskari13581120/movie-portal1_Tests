@@ -1,6 +1,30 @@
 .container {
-
   padding: 20px;
-
+  max-width: 1200px;
+  margin: 0 auto;
 }
- 
+
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+input, button {
+  width: 100%;
+  max-width: 300px;
+  margin: 8px 0;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .movie-list {
+    grid-template-columns: 1fr;
+  }
+}
